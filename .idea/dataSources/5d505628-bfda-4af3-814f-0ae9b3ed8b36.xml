@@ -1,0 +1,196 @@
+<dataSource name="MySQL - pwq@192.168.1.3">
+  <database-model serializer="dbm" rdbms="MYSQL" format-version="2.6">
+    <schema id="1" name="pwq">
+      <visible>1</visible>
+    </schema>
+    <schema id="2" name="backup" />
+    <schema id="3" name="exercise" />
+    <schema id="4" name="fruit" />
+    <schema id="5" name="information_schema" />
+    <schema id="6" name="manager" />
+    <schema id="7" name="manager2" />
+    <schema id="8" name="managercart" />
+    <schema id="9" name="mysql" />
+    <schema id="10" name="newdb" />
+    <schema id="11" name="test" />
+    <schema id="12" name="weixinexercise" />
+    <schema id="13" name="weixinxcx" />
+    <table id="14" parent="1" name="order" />
+    <table id="15" parent="1" name="orderstatus" />
+    <table id="16" parent="1" name="pwq" />
+    <table id="17" parent="1" name="resource" />
+    <table id="18" parent="1" name="sendorder" />
+    <table id="19" parent="1" name="users" />
+    <column id="20" parent="14" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <column id="21" parent="14" name="orderStr">
+      <comment>命令字符串</comment>
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="22" parent="14" name="turn">
+      <comment>是否旋转</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <key id="23" parent="14" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="24" parent="15" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+      <default-expression>''</default-expression>
+    </column>
+    <column id="25" parent="15" name="statusNo">
+      <comment>命令状态码</comment>
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="26" parent="15" name="statusDes">
+      <comment>说明信息</comment>
+      <data-type>varchar(800)|0</data-type>
+    </column>
+    <key id="27" parent="15" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="28" parent="16" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+      <default-expression>''</default-expression>
+    </column>
+    <column id="29" parent="16" name="name">
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="30" parent="16" name="ip">
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="31" parent="16" name="AreaId">
+      <comment>喷雾器所属区域信息</comment>
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <column id="32" parent="16" name="communication">
+      <comment>通讯状态</comment>
+      <data-type>varchar(500)|0</data-type>
+    </column>
+    <column id="33" parent="16" name="autoMark">
+      <comment>自动控制标志0 异常 1正常</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="34" parent="16" name="fjAutoMark">
+      <comment>风机状态标志1 自动 0手动</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="35" parent="16" name="pwMark">
+      <comment>喷雾状态标志0 关闭1启动</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="36" parent="16" name="fjGzMark">
+      <comment>风机故障标志0 正常 1故障</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="37" parent="16" name="pwGzMark">
+      <comment>喷雾故障标志0 正常 1故障</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="38" parent="16" name="currentTurn">
+      <data-type>double|0</data-type>
+    </column>
+    <column id="39" parent="16" name="leftPosition">
+      <data-type>double|0</data-type>
+    </column>
+    <column id="40" parent="16" name="rightPosition">
+      <data-type>double|0</data-type>
+    </column>
+    <key id="41" parent="16" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="42" parent="17" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+      <default-expression>''</default-expression>
+    </column>
+    <column id="43" parent="17" name="resourceName">
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="44" parent="17" name="url">
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="45" parent="17" name="state">
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="46" parent="17" name="orderNo">
+      <data-type>int(10)|0</data-type>
+    </column>
+    <column id="47" parent="17" name="Pid">
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <key id="48" parent="17" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="49" parent="18" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+      <default-expression>''</default-expression>
+    </column>
+    <column id="50" parent="18" name="orderNo">
+      <comment>命令字符串</comment>
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="51" parent="18" name="areaId">
+      <comment>区域主键</comment>
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <column id="52" parent="18" name="pwqId">
+      <comment>喷雾器主键</comment>
+      <data-type>varchar(32)|0</data-type>
+    </column>
+    <column id="53" parent="18" name="orderState">
+      <comment>命令主键</comment>
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="54" parent="18" name="clientIp">
+      <comment>客户端ip地址</comment>
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="55" parent="18" name="sendTime">
+      <comment>命令发送时间</comment>
+      <data-type>timestamp|0</data-type>
+    </column>
+    <key id="56" parent="18" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+    <column id="57" parent="19" name="id">
+      <mandatory>1</mandatory>
+      <data-type>varchar(32)|0</data-type>
+      <default-expression>''</default-expression>
+    </column>
+    <column id="58" parent="19" name="username">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="59" parent="19" name="pwd">
+      <data-type>varchar(100)|0</data-type>
+    </column>
+    <column id="60" parent="19" name="telphone">
+      <data-type>varchar(11)|0</data-type>
+    </column>
+    <column id="61" parent="19" name="headImg">
+      <data-type>varchar(200)|0</data-type>
+    </column>
+    <column id="62" parent="19" name="state">
+      <comment>1启用0禁用</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <column id="63" parent="19" name="utype">
+      <comment>用户类型0管理员1普通用户</comment>
+      <data-type>varchar(2)|0</data-type>
+    </column>
+    <key id="64" parent="19" name="PRIMARY">
+      <columns>id</columns>
+      <primary>1</primary>
+    </key>
+  </database-model>
+</dataSource>

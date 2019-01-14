@@ -1,0 +1,22 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.ht.domain.Pwq" table="pwq" schema="pwq">
+        <id name="id" column="id"/>
+        <property name="name" column="name"/>
+        <property name="ip" column="ip"/>
+        <property name="areaId" column="AreaId"/>
+        <property name="communication" column="communication"/>
+        <property name="autoMark" column="autoMark"/>
+        <property name="fjAutoMark" column="fjAutoMark"/>
+        <property name="pwMark" column="pwMark"/>
+        <property name="fjGzMark" column="fjGzMark"/>
+        <property name="pwGzMark" column="pwGzMark"/>
+        <property name="currentTurn" column="currentTurn"/>
+        <property name="leftPosition" column="leftPosition"/>
+        <property name="rightPosition" column="rightPosition"/>
+    </class>
+</hibernate-mapping>
