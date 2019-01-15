@@ -67,4 +67,18 @@ public class ResourceAction {
     public Map<String,String> deleteNode(String id,String pid) throws NoSuchMethodException, IntrospectionException, InstantiationException, IllegalAccessException, InvocationTargetException {
         return resourceService.deleteById(id,pid);
     }
+
+    /**
+     * 节点移动操作
+     * @param id
+     * @param tId
+     * @param moveType
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("/moveNode")
+    @ResponseBody
+    public Map<String,Object> moveNode(String id, String tId, String moveType) throws Exception{
+        return resourceService.moveNode(id,tId,moveType);
+    }
 }

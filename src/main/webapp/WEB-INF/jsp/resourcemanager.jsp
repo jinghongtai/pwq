@@ -362,29 +362,33 @@
     }
 
     function zTreeBeforeDrag(treeId, treeNodes){
-        if(treeNodes[0].rid == '0')
+        if(treeNodes[0].id == '1')
             return false;
         else
             return true;
     }
 
     function prevTree(treeId, treeNodes, targetNode) {
-        return !targetNode.isParent && targetNode.parentid == treeNodes[0].parentid;
+        return true;
     };
     function nextTree(treeId, treeNodes, targetNode) {
-        return !targetNode.isParent && targetNode.parentid == treeNodes[0].parentid;
+        return true;
     };
 
     //  移动按钮释放前的操作
     function zTreeBeforeDrop(treeId, treeNodes, targetNode, moveType) {
         if(!targetNode) return false;
+        if(targetNode.id=='1'){
+            msg("不允许移动到父节点之外！");
+            return false;
+        }
         if(!moveType || moveType == "inner") return false;
-        var data = {id:treeNodes[0].rid,tId:targetNode.rid,moveType:moveType};
+        var data = {id:treeNodes[0].id,tId:targetNode.id,moveType:moveType};
         var index = layer.load(2);
         $.ajax({
             type:'post',
             dataType:'json',
-            url:"sysResourceAction/moveNode",
+            url:"resourceAction/moveNode",
             data:data,
             async:false,
             success:function(res){
