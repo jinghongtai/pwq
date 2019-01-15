@@ -55,7 +55,7 @@
         <div class="layui-form-item">
             <label class="layui-form-label">用户名</label>
             <div class="layui-input-inline">
-                <input type="text" name="username" id="xgname" value="" disabled style="background-color:#ccc;" placeholder="请输入用户名"
+                <input type="text" name="username" id="xgname" value="" disabled="disabled" style="background-color:#ccc;" placeholder="请输入用户名"
                        autocomplete="off" class="layui-input ">
             </div>
             <label class="layui-form-label">手机</label>
@@ -252,6 +252,8 @@
                 if(layEvent === 'edit'){
                     // 设置用户信息
                     setUserInfo(data);
+                    $2("#xgname").prop("disabled","disabled");
+                    $2("#xgname").css({"background-color":"#ccc"});
                     $2("#updateOrInsert").show();
                     $2('.ztreeEdit').hide();
                 }else if(layEvent == 'accredit'){
@@ -364,6 +366,8 @@
                 },
                 insertUser:function(){
                     resetUserInfo();
+                    $2("#xgname").removeAttr("disabled");
+                    $2("#xgname").css({"background-color":""});
                     $2("#updateOrInsert").show();
                     $2('.ztreeEdit').hide();
                 },

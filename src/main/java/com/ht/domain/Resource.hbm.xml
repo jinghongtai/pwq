@@ -11,5 +11,7 @@
         <property name="state" column="state"/>
         <property name="orderNo" column="orderNo"/>
         <property name="pid" column="Pid"/>
+        <property name="bz" column="bz"/>
+        <property name="type" column="type"/>
     </class>
 </hibernate-mapping>
