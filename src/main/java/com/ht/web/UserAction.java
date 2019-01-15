@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import java.beans.IntrospectionException;
 import java.io.UnsupportedEncodingException;
@@ -72,5 +73,32 @@ public class UserAction {
     public boolean deleteUserByIds(@RequestParam("ids") List<String> ids){
         return userService.deleteUserByIds(ids);
     }
+
+    /**
+     * 显示用户列表页面
+     * @param users
+     * @return
+     * @throws IllegalAccessException
+     * @throws IntrospectionException
+     * @throws InvocationTargetException
+     */
+    @RequestMapping("/userlist")
+    public ModelAndView userlist(Users users) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+        ModelAndView mv = new ModelAndView();
+        mv.setViewName("/user/userList");
+        return mv;
+    }
+
+    /**
+     * 添加用户页面
+     * @param users
+     * @return
+     */
+    @RequestMapping("/userAddPage")
+    public String userAddPage(Users users){
+        return "/user/userAdd";
+    }
+
+
 
 }
