@@ -93,6 +93,7 @@ public class UserService {
                 map.put("message","该用户已存在");
                 return map;
             }
+            users.setPwd("111111");
             users.setPwd(SecurityUtil.security(users.getPwd(),"MD5"));
             userDao.save(users);
             map.put("status","success");
@@ -126,7 +127,7 @@ public class UserService {
             users.setLimit(30);
         // 统计带查询的用户信息
         Map<String, Object> notNullProperty = BeanUtil.getNotNullProperty(users);
-        List<Users> query = userDao.query(notNullProperty,"username");
+        List<Users> query = userDao.query(notNullProperty,"username",null,null);
         Long aLong = userDao.queryCount(notNullProperty,"username");
         return PageVo.returnPage(query,aLong);
     }

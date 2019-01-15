@@ -1,9 +1,7 @@
 package com.ht.domain;
 
-import javax.persistence.Basic;
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * 版权归公司所有
@@ -20,6 +18,35 @@ public class Resource {
     private String state;
     private Integer orderNo;
     private String pid;
+    private String bz;
+    private String type;
+
+
+    private Set<Resource> resourceSet = new HashSet<>();
+
+    public Set<Resource> getResourceSet() {
+        return resourceSet;
+    }
+
+    public void setResourceSet(Set<Resource> resourceSet) {
+        this.resourceSet = resourceSet;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getBz() {
+        return bz;
+    }
+
+    public void setBz(String bz) {
+        this.bz = bz;
+    }
 
     public String getId() {
         return id;

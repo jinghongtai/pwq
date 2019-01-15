@@ -12,6 +12,7 @@
 <link rel="stylesheet" href="static/layui/css/layer.css" media="all"/>
 
 <script type="text/javascript" src="static/layui/layui.js"></script>
+<script type="text/javascript" src="static/js/jquery.js"></script>
 <!-- 让IE8/9支持媒体查询，从而兼容栅格 -->
 <!--[if lt IE 9]>
 <script type="text/javascript" src="common/js/html5.min.js"></script>

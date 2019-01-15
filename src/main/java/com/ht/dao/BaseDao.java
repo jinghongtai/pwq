@@ -51,23 +51,25 @@ public class BaseDao<T extends Object,ID extends Serializable> {
      * @param map
      * @return
      */
-    public List<T> query(Map<String,Object> map,String likename){
+    public List<T> query(Map<String,Object> map,String likename,String orderFile,String orderDescOrAsc){
         StringBuffer sql = new StringBuffer("from ").append(this.getClazz().getName()).append(" WHERE  1=1 ");
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key))continue;
+            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1)continue;
             if("likeName".equals(key)){
                 sql.append(" and ").append(likename).append(" like ").append(" :"+key);
                 continue;
             }
             sql.append(" and ").append(key).append(" = ").append(" :"+key);
         }
+        if(orderFile!=null&&orderDescOrAsc!=null)
+            sql.append(" order by ").append(orderFile).append(" ").append(orderDescOrAsc);
         Query query = this.getConnection().createQuery(sql.toString());
         if(map.containsKey("page")&&map.containsKey("limit")){
             query.setFirstResult(((int)map.get("page")-1)*(int)map.get("limit"));
             query.setMaxResults((int)map.get("limit"));
         }
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key))continue;
+            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1)continue;
             if("likeName".equals(key)){
                 query.setParameter(key,"%"+map.get(key)+"%");
                 continue;
@@ -86,16 +88,16 @@ public class BaseDao<T extends Object,ID extends Serializable> {
     public Long queryCount(Map<String,Object> map,String likename){
         StringBuffer sql = new StringBuffer("select count(id) from ").append(this.getClazz().getName()).append(" WHERE  1=1 ");
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key))continue;
+            if("page".equals(key)||"limit".equals(key)||key.contains("Set"))continue;
             if("likeName".equals(key)){
                 sql.append(" and ").append(likename).append(" like ").append(" :"+key);
                 continue;
             }
-            sql.append(" ").append(key).append(" = ").append(" :"+key);
+            sql.append(" and ").append(key).append(" = ").append(" :"+key);
         }
         Query query = this.getConnection().createQuery(sql.toString());
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key))continue;
+            if("page".equals(key)||"limit".equals(key)||key.contains("Set")) continue;
             if("likeName".equals(key)){
                 query.setParameter(key,"%"+map.get(key)+"%");
                 continue;
