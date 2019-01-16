@@ -177,38 +177,52 @@ public class ResourceService {
             map.put("message","操作失败");
         }
         Resource param = BeanUtil.setBeanProperty(Resource.class, "id", id);
-        List<Resource> resource = resourceDao.query(BeanUtil.getNotNullProperty(param),null,null,null);
+        List<Resource> resource = resourceDao.query(BeanUtil.getNotNullProperty(param),null,"orderNo","asc");
+        Resource targetNode = resourceDao.get(tId);
         Resource param2 = BeanUtil.setBeanProperty(Resource.class,
-                "pid", resource.get(0).getPid());
-        List<Resource> resourceList = resourceDao.query(BeanUtil.getNotNullProperty(param2),null,null,null);
+                "pid", targetNode.getPid());
+        List<Resource> resourceList = resourceDao.query(BeanUtil.getNotNullProperty(param2),null,"orderNo","asc");
         List<Resource> orderNodes = new ArrayList<Resource>();
-        Resource orderNode = null;
         if("next".equals(moveType)){
             for (int i = 0; i < resourceList.size(); i++) {
                 Resource var1 = resourceList.get(i);
-                if(!id.equals(var1.getId())){
-                    orderNodes.add(var1);
-                }
                 if(tId.equals(var1.getId())){
-                    orderNodes.add(resource.get(0));
+                    Resource vas = resource.get(0);
+                    vas.setPid(var1.getPid());
+                    if(i!=0){
+                        orderNodes.add(i-1,var1);
+                        orderNodes.add(i,vas);
+                    }else{
+                        orderNodes.add(0,var1);
+                        orderNodes.add(vas);
+                    }
+                }else{ // 同级节点时不在处理
+                    if(!id.equals(var1.getId()))
+                        orderNodes.add(var1);
                 }
-
             }
         }
         if("prev".equals(moveType)){
+            // 此处需考虑同级移动和跨级移动
             for (int i = 0; i < resourceList.size(); i++) {
                 Resource var1 = resourceList.get(i);
                 if(tId.equals(var1.getId())){
-                    if(i!=0)
-                        orderNodes.add(i,resource.get(0));
-                    else
-                        orderNodes.add(0,resource.get(0));
-                }
-                if(!id.equals(var1.getId())){
-                    orderNodes.add(var1);
+                    Resource vas = resource.get(0);
+                    vas.setPid(var1.getPid());
+                    if(i!=0){
+                        orderNodes.add(i-1,vas);
+                        orderNodes.add(i,var1);
+                    }else{
+                        orderNodes.add(0,vas);
+                        orderNodes.add(var1);
+                    }
+                }else{
+                    if(!id.equals(var1.getId()))
+                        orderNodes.add(var1);
+
                 }
             }
-        }//张姐：23755875
+        }
         for (int i = 0; i < orderNodes.size(); i++) {
             orderNodes.get(i).setOrderNo(i+1);
         }
