@@ -77,6 +77,7 @@
                     //页面层
                     layer.open({
                         type: 2,
+                        title: '添加用户',
                       /*  skin: 'layui-layer-rim', //加上边框*/
                         area: ['750px', '600px'], //宽高
                         content: '/userAction/userAddPage'
