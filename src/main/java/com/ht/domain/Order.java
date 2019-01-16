@@ -1,9 +1,12 @@
 package com.ht.domain;
 
+import com.ht.utils.PageParam;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import java.io.Serializable;
 
 /**
  * 版权归公司所有
@@ -13,7 +16,7 @@ import javax.persistence.Id;
  *
  * @version: 1.0
  */
-public class Order {
+public class Order extends PageParam implements Serializable {
     private String id;
     private String orderStr;
     private String turn;
