@@ -66,4 +66,12 @@ public class PageVo<T> {
         pageVo.setCount(total!=null?total.intValue():0);
         return  pageVo;
     }
+    public static PageVo returnString(String t){
+        PageVo pageVo = new PageVo();
+        pageVo.setCode(0);
+        pageVo.setMsg(t);
+        pageVo.setData(new ArrayList());
+        pageVo.setCount(0);
+        return  pageVo;
+    }
 }
