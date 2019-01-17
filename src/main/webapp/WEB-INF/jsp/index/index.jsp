@@ -166,7 +166,7 @@
         }*/
     </style>
 </head>
-<body class="layui-layout-body" layadmin-themealias="default" style="background-image: ">
+<body class="layui-layout-body" layadmin-themealias="default" >
     <div class="wrapper">
         <!-- 外层的线路 -->
         <div class="wc">
@@ -187,6 +187,9 @@
                 <div class="pwti">
                     1#
                 </div>
+            </div>
+            <div>
+                1#
             </div>
 
 
