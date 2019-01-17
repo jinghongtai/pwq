@@ -31,6 +31,14 @@ public class CommonAction {
             return "main";
         return page;
     }
+    /**
+     * 页面跳转控制器
+     * @return
+     */
+    @RequestMapping("/index")
+    public String index(){
+        return "/index/index";
+    }
 
 
 }

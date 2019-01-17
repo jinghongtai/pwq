@@ -393,7 +393,7 @@
                                 <a lay-href="order/orderList">指令集</a>
                             </dd>
                             <dd>
-                                <a lay-href="user/administrators/role.html">角色管理</a>
+                                <a lay-href="index/index">图形界面</a>
                             </dd>
                         </dl>
                     </li>
