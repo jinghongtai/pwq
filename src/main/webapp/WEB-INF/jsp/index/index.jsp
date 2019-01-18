@@ -7,9 +7,10 @@
 <head>
     <base href="<%=basePath%>">
     <title>Title</title>
-    <link rel="stylesheet" href="static/css/layui2.css" />
-    <link rel="stylesheet" href="static/css/admin.css" />
-    <script type="text/javascript" src="static/common/hm.js"></script>
+    <link rel="stylesheet" href="../static/css/layui2.css" />
+    <link rel="stylesheet" href="../static/css/admin.css" />
+    <link rel="stylesheet" href="../static/layui/css/layui.css"  media="all">
+    <script type="text/javascript" src="../static/common/hm.js"></script>
     <style>
         .wc{
             border-bottom:1px solid #000000;
@@ -300,7 +301,7 @@
         </div>
 
     </div>
-<script type="text/javascript" src="static/js/jquery.js"></script>
+<script type="text/javascript" src="../static/js/jquery.js"></script>
 <script src="../static/layui/layui.js" charset="utf-8"></script>
 <script src="../static/layui/lay/modules/layer.js" charset="utf-8"></script>
 <script>
