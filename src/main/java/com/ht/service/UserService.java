@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.jws.WebService;
 import java.beans.IntrospectionException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -29,6 +30,7 @@ import java.util.Map;
  * @version: 1.0
  */
 @Service("userService")
+@WebService
 public class UserService {
 
     @Autowired

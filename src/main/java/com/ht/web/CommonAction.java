@@ -46,10 +46,10 @@ public class CommonAction {
      * 页面跳转控制器
      * @return
      */
-    @RequestMapping("/index")
+    /*@RequestMapping("/index")
     public String index(){
         return "/index/index";
-    }
+    }*/
 
     /**
      * 程序启动跳转至主页

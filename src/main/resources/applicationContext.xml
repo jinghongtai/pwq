@@ -4,6 +4,7 @@
        xmlns:context="http://www.springframework.org/schema/context"
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:jaxws="http://cxf.apache.org/jaxws"
        xsi:schemaLocation="http://www.springframework.org/schema/beans
                            http://www.springframework.org/schema/beans/spring-beans.xsd
                            http://www.springframework.org/schema/context
@@ -12,7 +13,8 @@
                            http://www.springframework.org/schema/tx/spring-tx.xsd
                            http://www.springframework.org/schema/aop
                            http://www.springframework.org/schema/aop/spring-aop.xsd
-
+                           http://cxf.apache.org/jaxws
+                           http://cxf.apache.org/schemas/jaxws.xsd
 ">
 
 
@@ -79,9 +81,19 @@
     </tx:advice>
 
     <aop:config expose-proxy="true">
-        <aop:pointcut id="txPointcut" expression="execution(* com.ht.*.service..*.*(..))" />
+        <aop:pointcut id="txPointcut" expression="execution(* com.ht.*.service.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
+
+
+
+    <import resource="classpath:META-INF/cxf/cxf.xml" />
+    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
+    
+    <!--自动扫描webService-->
+    <context:component-scan base-package="com.ht" />
+    <!--自定义webService的发布接口 address是指需要访问的地址  implementor 指类中定义的名称-->
+    <jaxws:endpoint implementor="#userService" address="/HelloWord"   />
 
 
 

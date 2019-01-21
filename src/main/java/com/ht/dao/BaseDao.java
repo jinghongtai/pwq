@@ -4,6 +4,7 @@ import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.util.StringUtils;
 
 import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
@@ -47,6 +48,24 @@ public class BaseDao<T extends Object,ID extends Serializable> {
     }
 
     /**
+     * 根据泛型查询具体的实体信息
+     * @param e
+     * @param field
+     * @param operatorType
+     * @param obj
+     * @param <E>
+     * @return
+     */
+    public <E> List<E> query(Class<E> e,String field,String operatorType,String obj){
+        String sql = "from " + e.getName()+" WHERE  1=1 ";
+        if(!StringUtils.isEmpty(field)&&!StringUtils.isEmpty(obj))
+            sql += "and "+field + operatorType + " :name";
+        Query query = this.getConnection().createQuery(sql);
+        if(!StringUtils.isEmpty(field)&&!StringUtils.isEmpty(obj))
+            query.setParameter("name",obj);
+        return query.list();
+    }
+    /**
      * 分页查询数据
      * @param map
      * @return
@@ -54,7 +73,7 @@ public class BaseDao<T extends Object,ID extends Serializable> {
     public List<T> query(Map<String,Object> map,String likename,String orderFile,String orderDescOrAsc){
         StringBuffer sql = new StringBuffer("from ").append(this.getClazz().getName()).append(" WHERE  1=1 ");
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1)continue;
+            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1||"resourcIds".equals(key))continue;
             if("likeName".equals(key)){
                 sql.append(" and ").append(likename).append(" like ").append(" :"+key);
                 continue;
@@ -69,7 +88,7 @@ public class BaseDao<T extends Object,ID extends Serializable> {
             query.setMaxResults((int)map.get("limit"));
         }
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1)continue;
+            if("page".equals(key)||"limit".equals(key)||key.indexOf("Set")!=-1||"resourcIds".equals(key))continue;
             if("likeName".equals(key)){
                 query.setParameter(key,"%"+map.get(key)+"%");
                 continue;
@@ -88,7 +107,7 @@ public class BaseDao<T extends Object,ID extends Serializable> {
     public Long queryCount(Map<String,Object> map,String likename){
         StringBuffer sql = new StringBuffer("select count(id) from ").append(this.getClazz().getName()).append(" WHERE  1=1 ");
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key)||key.contains("Set"))continue;
+            if("page".equals(key)||"limit".equals(key)||key.contains("Set")||"resourcIds".equals(key))continue;
             if("likeName".equals(key)){
                 sql.append(" and ").append(likename).append(" like ").append(" :"+key);
                 continue;
@@ -97,14 +116,15 @@ public class BaseDao<T extends Object,ID extends Serializable> {
         }
         Query query = this.getConnection().createQuery(sql.toString());
         for(String key:map.keySet()){
-            if("page".equals(key)||"limit".equals(key)||key.contains("Set")) continue;
+            if("page".equals(key)||"limit".equals(key)||key.contains("Set")||"resourcIds".equals(key)) continue;
             if("likeName".equals(key)){
                 query.setParameter(key,"%"+map.get(key)+"%");
                 continue;
             }
             query.setParameter(key,map.get(key));
         }
-        return (Long) query.uniqueResult();
+        Object o = query.uniqueResult();
+        return o==null?null:(Long)o;
     }
 
     /**
@@ -114,6 +134,13 @@ public class BaseDao<T extends Object,ID extends Serializable> {
      */
     public void deleteByIDS(String filed,List<String> ids){
         String hql = "delete from "+this.getClazz().getName()+" where "+filed+" in :ids";
+        org.hibernate.query.Query query = this.getConnection().createQuery(hql);
+        query.setParameterList("ids",ids);
+        query.executeUpdate();
+    }
+
+    public <E> void deleteByIDS(Class<E> e,String filed,List<String> ids){
+        String hql = "delete from "+e.getName()+" where "+filed+" in :ids";
         org.hibernate.query.Query query = this.getConnection().createQuery(hql);
         query.setParameterList("ids",ids);
         query.executeUpdate();

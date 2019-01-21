@@ -13,6 +13,10 @@
     .ztreeEdit{
         margin-top: 12px;
     }
+    .inputHeight{
+        line-height:25px;
+        height:25px;
+    }
 </style>
 <body>
 <body>
@@ -258,14 +262,14 @@
                     $2('.ztreeEdit').hide();
                 }else if(layEvent == 'accredit'){
                     //获取已经授权的角色及所有的角色
-                    $("#USERIDACCREDIT").val(data.uid);
+                    $("#USERIDACCREDIT").val(data.id);
                     $("#roleDivInfo").empty();
-                    $.post("sysRoleAction/queryUserDepartRole",{uId:data.uid},function(res){
+                    $.post("userAndRoleAction/queryUserRoleByEntity",{uId:data.id},function(res){
                         if(res){
                             var array = [];
                             for(var i=0;i<res.length;i++){
-                                var str = '<input type="checkbox" name="role" value="'+res[i].rid+'" title="'+res[i].rolename+'"';
-                                if(res[i].falg=="true")
+                                var str = '<input type="checkbox" name="role" value="'+res[i].id+'" title="'+res[i].rolename+'"';
+                                if(res[i].flag=="true")
                                     str += checked="checked";
                                 array.push(str+">");
                             }
@@ -276,7 +280,7 @@
                             type: 1,
                             content: $("#userSetRole"), //这里content是一个普通的String
                             area: ['500px', '400px'],
-                            offset: ['80px', '50px'],
+                            offset: ['80px', '350px'],
                             title:"角色信息"
                         });
                     },"json");
@@ -432,19 +436,19 @@
                     }
                     var saveObj = [];
                     checkArray.forEach(function(e){
-                        saveObj.push({uid:uId,rid:e});
+                        saveObj.push({uId:uId,rId:e});
                     });
                     $.ajax({
                         dataType:'json',
-                        url:'userAndRoleAction/saveUserAndRole',
+                        url:'userAndRoleAction/saveUserRole',
                         type:'post',
                         contentType:'application/json',
                         data:JSON.stringify(saveObj),
                         success:function(res){
-                            if(res.status==200)
+                            if(res)
                                 msg("角色分配成功");
                             else
-                                msg(res.message);
+                                msg("角色分配失败");
                         },
                         error:function () {
 
