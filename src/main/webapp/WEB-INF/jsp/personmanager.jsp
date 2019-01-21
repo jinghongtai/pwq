@@ -7,7 +7,7 @@
 <head>
     <base href="<%=basePath%>">
     <title>人员管理</title>
-    <%@include file="../common.jsp"%>
+    <%@include file="common.jsp"%>
 </head>
 <style>
     .ztreeEdit{
