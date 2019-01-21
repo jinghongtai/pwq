@@ -60,10 +60,18 @@ public class PageVo<T> {
 
     public static <T> PageVo returnPage(List<T> t,Long total){
         PageVo pageVo = new PageVo();
-        pageVo.setCode(200);
+        pageVo.setCode(0);
         pageVo.setMsg("");
         pageVo.setData(t);
         pageVo.setCount(total!=null?total.intValue():0);
+        return  pageVo;
+    }
+    public static PageVo returnString(String t){
+        PageVo pageVo = new PageVo();
+        pageVo.setCode(0);
+        pageVo.setMsg(t);
+        pageVo.setData(new ArrayList());
+        pageVo.setCount(0);
         return  pageVo;
     }
 }

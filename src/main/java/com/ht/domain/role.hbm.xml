@@ -1,0 +1,18 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.ht.domain.Role" table="role" schema="pwq">
+        <id name="id" column="id">
+            <generator class="uuid.hex"/>
+        </id>
+        <property name="rolename" column="rolename"/>
+        <property name="orderNo" column="orderNo"/>
+        <property name="isenabled" column="isenabled"/>
+        <property name="createTime" column="createTime"/>
+        <property name="remark" column="remark"/>
+
+    </class>
+</hibernate-mapping>
