@@ -18,6 +18,53 @@ public class Sendorder {
     private String orderState;
     private String clientIp;
     private Timestamp sendTime;
+    private String fanOperation;//风机操作
+    private String sprayOperation;//喷雾操作
+    private String galeStrategy;//大风策略
+    private String swingOperation;//摆动操作
+    private String galeclFx;
+    private String swingFd;
+
+    public String getGaleclFx() {
+        return galeclFx;
+    }
+
+    public void setGaleclFx(String galeclFx) {
+        this.galeclFx = galeclFx;
+    }
+
+    public String getSwingFd() {
+        return swingFd;
+    }
+
+    public void setSwingFd(String swingFd) {
+        this.swingFd = swingFd;
+    }
+
+    public String getSprayOperation() {
+        return sprayOperation;
+    }
+
+    public void setSprayOperation(String sprayOperation) {
+        this.sprayOperation = sprayOperation;
+    }
+
+    public String getGaleStrategy() {
+        return galeStrategy;
+    }
+
+    public void setGaleStrategy(String galeStrategy) {
+        this.galeStrategy = galeStrategy;
+    }
+
+    public String getSwingOperation() {
+        return swingOperation;
+    }
+
+    public void setSwingOperation(String swingOperation) {
+        this.swingOperation = swingOperation;
+    }
+
 
     public String getId() {
         return id;
@@ -25,6 +72,14 @@ public class Sendorder {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getFanOperation() {
+        return fanOperation;
+    }
+
+    public void setFanOperation(String fanOperation) {
+        this.fanOperation = fanOperation;
     }
 
     public String getOrderNo() {

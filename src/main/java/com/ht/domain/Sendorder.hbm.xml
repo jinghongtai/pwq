@@ -12,5 +12,11 @@
         <property name="orderState" column="orderState"/>
         <property name="clientIp" column="clientIp"/>
         <property name="sendTime" column="sendTime"/>
+        <property name="fanOperation" column="fanOperation"/>
+        <property name="sprayOperation" column="sprayOperation"/>
+        <property name="galeStrategy" column="galeStrategy"/>
+        <property name="swingOperation" column="swingOperation"/>
+        <property name="galeclFx" column="galeclFx"/>
+        <property name="swingFd" column="swingFd"/>
     </class>
 </hibernate-mapping>
