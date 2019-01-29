@@ -1,8 +1,12 @@
 package com.ht.web;
 
+import com.alibaba.fastjson.JSON;
 import com.ht.domain.Resource;
+import com.ht.domain.Sendorder;
 import com.ht.service.ResourceService;
+import com.ht.service.SendOrderService;
 import com.ht.utils.BeanUtil;
+import config.util.ServerIp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
@@ -14,6 +18,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
+
 
 /**
  * 版权归公司所有
@@ -31,6 +36,10 @@ public class CommonAction {
     @Autowired
     private ResourceService resourceService;
 
+    @Autowired
+    private SendOrderService sendOrderService;
+
+
     /**
      * 页面跳转控制器
      * @param page
@@ -46,10 +55,26 @@ public class CommonAction {
      * 页面跳转控制器
      * @return
      */
-    /*@RequestMapping("/index")
-    public String index(){
-        return "/index/index";
-    }*/
+    @RequestMapping("/index")
+    public ModelAndView index1(String areaId){
+        List<Map> listSendOrder = new ArrayList<>();
+        Map<String,Object> map = new HashMap();
+        //根据堆场查询对应页面的指令
+        List<Sendorder> list = sendOrderService.query("areaId",areaId);
+        for(Sendorder sendorder : list){
+            String orderNum = sendorder.getOrderNo();
+            map.put("pwqid"+orderNum,sendorder.getId());
+            Map map1 = ServerIp.convertBeanToMap(sendorder);
+            listSendOrder.add(map1);
+        }
+        map.put("areaId",areaId);
+
+        ModelAndView mv= new ModelAndView();
+        mv.setViewName("/index/index");
+        mv.addObject("data",map);
+        mv.addObject("sendOrders", JSON.toJSONString(listSendOrder));
+        return mv;
+    }
 
     /**
      * 程序启动跳转至主页
@@ -62,9 +87,12 @@ public class CommonAction {
         List<Resource> resources = resourceService.querySysResByEntity(new Resource());
         Map<String, List<Resource>> map = BeanUtil.getListToMapKList("pid", resources);
         resourceService.checkChildrenNode(map,"0");
-        Set<Resource> resourceSet = map.get("0").get(0).getResourceSet();
-        List<Resource> returnResource = orderResource(new ArrayList<Resource>(resourceSet));
-        mv.addObject("menuList",returnResource);
+        if(!map.isEmpty()){
+            Set<Resource> resourceSet = map.get("0").get(0).getResourceSet();
+            List<Resource> returnResource = orderResource(new ArrayList<Resource>(resourceSet));
+            mv.addObject("menuList",returnResource);
+        }
+
         return mv;
     }
 
