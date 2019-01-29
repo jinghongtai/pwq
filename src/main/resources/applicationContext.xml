@@ -17,10 +17,6 @@
                            http://cxf.apache.org/schemas/jaxws.xsd
 ">
 
-
-    <context:component-scan base-package="com.ht.**" />
-    <context:annotation-config />
-
     <bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer" >
         <property name="fileEncoding" value="UTF-8" />
         <property name="locations" >
@@ -63,35 +59,44 @@
         </property>
     </bean>
 
-    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-        <property name="sessionFactory" ref="sessionFactory"/>
+    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
     </bean>
 
-    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
+    <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
+        <property name="sessionFactory" ref="sessionFactory" />
+    </bean>
 
-    <tx:advice id="txAdvice" transaction-manager="transactionManager">
+
+    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager"   >
         <tx:attributes>
             <tx:method name="update*" propagation="REQUIRED"/>
             <tx:method name="modify*" propagation="REQUIRED"/>
             <tx:method name="delete*" propagation="REQUIRED"/>
             <tx:method name="insert*" propagation="REQUIRED"/>
-            <tx:method name="save*" propagation="REQUIRED"/>
-            <tx:method name="*" read-only="true"/>
+            <tx:method name="save*"   propagation="REQUIRED"/>
+            <tx:method name="*"       read-only="true"      />
         </tx:attributes>
     </tx:advice>
 
-    <aop:config expose-proxy="true">
-        <aop:pointcut id="txPointcut" expression="execution(* com.ht.*.service.*(..))" />
+
+
+    <aop:config expose-proxy="true" proxy-target-class="true">
+        <aop:pointcut id="txPointcut" expression="execution(* com.ht.service..*.*(..))" />
         <aop:advisor advice-ref="txAdvice" pointcut-ref="txPointcut"/>
     </aop:config>
 
+    <!--配置全注解的事务-->
+    <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 
     <import resource="classpath:META-INF/cxf/cxf.xml" />
     <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
-    
+    <context:annotation-config />
+
     <!--自动扫描webService-->
     <context:component-scan base-package="com.ht" />
+
     <!--自定义webService的发布接口 address是指需要访问的地址  implementor 指类中定义的名称-->
     <jaxws:endpoint implementor="#userService" address="/HelloWord"   />
 
