@@ -12,7 +12,6 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
-import javax.jws.WebService;
 import java.beans.IntrospectionException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -30,7 +29,6 @@ import java.util.Map;
  * @version: 1.0
  */
 @Service("userService")
-@WebService
 public class UserService {
 
     @Autowired
@@ -95,6 +93,7 @@ public class UserService {
                 map.put("message","该用户已存在");
                 return map;
             }
+            users.setState("1");
             users.setPwd("111111");
             users.setPwd(SecurityUtil.security(users.getPwd(),"MD5"));
             userDao.save(users);
@@ -102,18 +101,41 @@ public class UserService {
             return map;
         }else{
             // 更新操作 kdjj
-            List<Users> username = userDao.query("username", "=", users.getUsername());
+            List<Users> username = userDao.query("id", "=", users.getId());
             if(username==null||username.size()==0){
                 map.put("message","该用户不存在");
                 return map;
             }
-            BeanUtils.copyProperties(users,username.get(0),"id","headImg","pwd");
+            String[] fields = null;
+            if(StringUtils.isEmpty(users.getHeadImg()))
+                fields = new String[]{"id","pwd","headImg","state"};
+            else
+                fields = new String[]{"id","pwd","state"};
+            BeanUtils.copyProperties(users,username.get(0),fields);
             userDao.update(username.get(0));
             map.put("status","success");
             return map;
         }
 
 
+    }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Map<String,String> modifyUserInfo(Users u) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("status","error");
+        if(StringUtils.isEmpty(u.getId())){
+            map.put("message","操作失败");
+            return map;
+        }
+        List<String> nullProperty = BeanUtil.getNullProperty(u);
+        nullProperty.add("id");
+        nullProperty.add("headImg");
+        nullProperty.add("pwd");
+        Users users = userDao.get(u.getId());
+        BeanUtils.copyProperties(u,users,nullProperty.toArray(new String[nullProperty.size()]));
+        map.put("status","success");
+        return map;
     }
 
     /**

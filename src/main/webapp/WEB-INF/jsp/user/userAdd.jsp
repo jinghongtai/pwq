@@ -43,7 +43,7 @@
                 <label class="layui-form-label">用户头像：</label>
                 <div class="layui-upload-list" id="uploadclick">
                     <img class="layui-upload-img" id="uploadImage" style="border-radius:50%;border:1px solid #cccccc;">
-                    <p id="demoText"></p>
+                    <p id="demoText" style="margin-left: 250px; top: -70px; position: relative;"></p>
                     <input type="hidden" id="headImg" name="headImg" value="" class="layui-input">
                 </div>
 

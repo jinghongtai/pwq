@@ -2,6 +2,7 @@ package com.ht.web;
 
 import com.ht.domain.Users;
 import com.ht.service.UserService;
+import com.ht.utils.FileUtil;
 import com.ht.utils.PageVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -9,12 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.beans.IntrospectionException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -59,7 +62,14 @@ public class UserAction {
      */
     @RequestMapping("/saveOrUpdateUser")
     @ResponseBody
-    public Map<String,String> saveOrUpdateUser(Users users) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+    public Map<String,String> saveOrUpdateUser(MultipartFile file, Users users) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        if(file!=null){
+            Map<String, String> map = FileUtil.uploadFile(file, "static/upload/userImg", Arrays.asList("image/jpeg","image/jpg", "image/png"));
+            if("success".equals(map.get("status"))){
+                users.setHeadImg(map.get("path"));
+            }else
+                return map;
+        }
         return userService.saveOrUpdateUser(users);
     }
 
@@ -99,6 +109,12 @@ public class UserAction {
         return "/user/userAdd";
     }
 
+
+    @RequestMapping("/modifyUserInfo")
+    @ResponseBody
+    public Map<String,String> modifyUserInfo(Users u) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+        return userService.modifyUserInfo(u);
+    }
 
 
 }

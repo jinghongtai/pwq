@@ -52,6 +52,11 @@
     </bean>
 
 
+    <bean id="multipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+        <property name="defaultEncoding" value="utf-8" />
+        <property name="maxInMemorySize" value="1024" />
+        <property name="maxUploadSizePerFile" value="1024000000" />
+    </bean>
 
     <!--配置spring的拦截器-->
     <!-- <mvc:interceptors>

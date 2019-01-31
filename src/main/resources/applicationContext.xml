@@ -47,8 +47,8 @@
             <props>
                 <prop key="dialect">org.hibernate.dialect.Dialect</prop>
                 <prop key="current_session_context_class">org.springframework.orm.hibernate5.SpringSessionContext</prop>
-                <prop key="show_sql">true</prop>
-                <prop key="format_sql">true</prop>
+                <prop key="hibernate.show_sql">true</prop>
+                <prop key="hibernate.format_sql">true</prop>
                 <prop key="hibernate.hbm2ddl.auto">update</prop>
             </props>
         </property>
@@ -59,16 +59,12 @@
         </property>
     </bean>
 
-    <bean id="dataSourceTransactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
     <bean id="transactionManager" class="org.springframework.orm.hibernate5.HibernateTransactionManager">
         <property name="sessionFactory" ref="sessionFactory" />
     </bean>
 
 
-    <tx:advice id="txAdvice" transaction-manager="dataSourceTransactionManager"   >
+    <tx:advice id="txAdvice" transaction-manager="transactionManager"   >
         <tx:attributes>
             <tx:method name="update*" propagation="REQUIRED"/>
             <tx:method name="modify*" propagation="REQUIRED"/>
@@ -90,15 +86,10 @@
     <tx:annotation-driven transaction-manager="transactionManager" proxy-target-class="true" />
 
 
-    <import resource="classpath:META-INF/cxf/cxf.xml" />
-    <import resource="classpath:META-INF/cxf/cxf-servlet.xml" />
     <context:annotation-config />
 
     <!--自动扫描webService-->
     <context:component-scan base-package="com.ht" />
-
-    <!--自定义webService的发布接口 address是指需要访问的地址  implementor 指类中定义的名称-->
-    <jaxws:endpoint implementor="#userService" address="/HelloWord"   />
 
 
 

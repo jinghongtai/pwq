@@ -1,5 +1,7 @@
 package com.ht.domain;
 
+import com.ht.utils.PageParam;
+
 /**
  * 版权归公司所有
  * 项目名称： 应用支撑平台;
@@ -8,7 +10,7 @@ package com.ht.domain;
  *
  * @version: 1.0
  */
-public class Orderstatus {
+public class Orderstatus  extends PageParam{
     private String id;
     private String statusNo;
     private String statusDes;

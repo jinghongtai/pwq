@@ -51,6 +51,11 @@ public class CommonAction {
             return "main";
         return page;
     }
+
+    @RequestMapping("/index/{page}/{page1}")
+    public String openJsp(@PathVariable("page") String page,@PathVariable("page1") String page1){
+        return page+"/"+page1;
+    }
     /**
      * 页面跳转控制器
      * @return

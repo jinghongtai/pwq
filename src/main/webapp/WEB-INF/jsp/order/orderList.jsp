@@ -5,22 +5,55 @@
 %>
 <html>
 <head>
+    <base href="<%=basePath%>">
     <meta charset="utf-8">
     <title>layui</title>
     <meta name="renderer" content="webkit">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <link rel="stylesheet" href="../static/layui/css/layui.css"  media="all">
+    <%@ include file="../common.jsp"%>
+    <style>
+        .ztreeEdit,#orderForm{
+            margin-top: 12px;
+        }
+        .layui-input {
+            width: 50%;
+        }
+    </style>
 </head>
 <body>
+<div class="ztreeEdit">
+    <table class="layui-hide" id="test" lay-filter="test"></table>
+</div>
 
-<table class="layui-hide" id="test" lay-filter="test"></table>
-
+<div id="orderForm" style="display: none;margin-left:100px;margin-top:50px !important;" class="layui-form" lay-filter="example">
+    <div class="layui-form-item">
+        <label class="layui-form-label">命令编码：</label>
+        <div class="layui-input-block">
+            <input type="text" name="id" id="id"  lay-verify="title" autocomplete="off" placeholder="请输入命令编码" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">命令说明：</label>
+        <div class="layui-input-block">
+            <input type="text" name="orderStr" id="orderStr" placeholder="请输入命令说明" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <label class="layui-form-label">是否转向：</label>
+        <div class="layui-input-block">
+            <input type="text" name="turn" id="turn" placeholder="请输入转向" autocomplete="off" class="layui-input" value="">
+        </div>
+    </div>
+    <div class="layui-form-item">
+        <div class="layui-input-block" style="margin-left:40%;">
+            <button class="layui-btn test  layui-btn-sm" lay-submit="" data-type="saveOrUpdateOrder">保存</button>
+            <button class="layui-btn test layui-btn-sm" lay-submit="" data-type="goBack">返回</button>
+        </div>
+    </div>
+</div>
 <script type="text/html" id="toolbarDemo">
     <div class="layui-btn-container">
-        <%--<button class="layui-btn layui-btn-sm" lay-event="getCheckData">获取选中行数据</button>
-        <button class="layui-btn layui-btn-sm" lay-event="getCheckLength">获取选中数目</button>
-        <button class="layui-btn layui-btn-sm" lay-event="isAll">验证是否全选</button>--%>
         <button class="layui-btn layui-btn-sm" lay-event="addOrder">
             <i class="layui-icon">&#xe608;</i> 添加指令
         </button>
@@ -34,17 +67,31 @@
 <script src="../static/layui/layui.js" charset="utf-8"></script>
 
 <script>
-    layui.use('table', function(){
-        var table = layui.table;
-        initTable(table)
+    var $2 ;
+    var table;
+    var layer;
+
+    function resetOrderInfo(){
+        $2("#id").val("");
+        $2("#orderStr").val("");
+        $2("#turn").val("");
+    }
+
+    layui.use(['table','layer'], function(){
+        table = layui.table;
+        $2 = layui.$;
+        layer = layui.layer;
+
+        initTable(table) ;
+
         //头工具栏事件
         table.on('toolbar(test)', function(obj){
             var checkStatus = table.checkStatus(obj.config.id);
             switch(obj.event){
                 case 'addOrder':
-                    //弹出一个页面 里面有可添加指令信息
-                    //页面层
-                    openOrderPage(table);
+                    resetOrderInfo();
+                    $2("#orderForm").show();
+                    $2('.ztreeEdit').hide();
                     break;
             };
         });
@@ -65,9 +112,54 @@
                     */
                 });
             } else if(obj.event === 'edit'){
-                console.log(data)
-                openOrderPage(table,data.id);
+                $2("#id").val(data.id);
+                $2("#orderStr").val(data.orderStr);
+                $2("#turn").val(data.turn);
+                $2("#orderForm").show();
+                $2('.ztreeEdit').hide();
             }
+        });
+
+        var  active = {
+
+            searchRole: function(){
+                //执行重载
+                tableReload();
+            },
+            //返回
+            goBack:function(){
+                $2("#orderForm").hide();
+                $2('.ztreeEdit').show();
+                tableReload();
+            },
+            // 启用 禁用
+            saveOrUpdateOrder:function(){
+                var id = $2("#id").val();
+                var orderStr = $2("#orderStr").val();
+                var turn = $2("#turn").val();
+                if(!id){
+                    tip("命令字符串不能为空",$2("#id"));
+                    return ;
+                }
+                if(!orderStr){
+                    tip("命令说明不能为空",$2("#orderStr"));
+                    return ;
+                }
+                $.post("order/saveOrUpdateOrder",{"id":id,"orderStr":orderStr,"turn":turn},function(res){
+                    if(res.status=="success"){
+                        msg("操作成功");
+                        tableReload();
+                    }else
+                        msg(res.message);
+                },"json");
+            }
+
+        };
+        //返回
+
+        $('#orderForm .layui-btn').on('click', function(){
+            var type = $2(this).data('type');
+            active[type] ? active[type].call(this) : '';
         });
     });
 
@@ -93,17 +185,26 @@
     function initTable(table){
         table.render({
             elem: '#test'
+            ,id:'myOrderTable'
             ,url:'/order/queryOrderPage'
             ,toolbar: '#toolbarDemo'
             ,title: '命令页面'
+            ,limits:[10,15,20]
             ,cols: [[
                 {type: 'checkbox', fixed: 'left'}
-                ,{field:'id', title:'命令编码', width:250, fixed: 'left', sort: true}
-                ,{field:'orderStr', title:'命令说明', width:550}
+                ,{field:'id', title:'命令编码', width:150, fixed: 'left', sort: true}
+                ,{field:'orderStr', title:'命令说明', width:300}
                 ,{field:'turn', title:'是否转向', width:150}
-                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', width:150}
+                ,{fixed: 'right', title:'操作', toolbar: '#barDemo', align: 'center',  width:150}
             ]]
             ,page: true
+            ,response: {
+                dataName: 'data'
+                ,countName: 'count'
+                ,statusName: 'code'
+                ,statusCode: 200
+                ,msgName : 'msg'
+            }
         });
     }
 
@@ -127,6 +228,28 @@
                 }
 
             }
+        });
+    }
+
+    function tableReload(){
+
+        table.reload('myOrderTable', {
+            page: {
+                curr: 1 //重新从第 1 页开始
+            }
+
+        });
+    }
+
+
+    function tip(content,position){
+        layer.tips(content, $2(position)); //在元素的事件回调体中，follow直接赋予this即可
+    }
+
+
+    function msg(content){
+        layer.msg(content, {
+            time: 2000
         });
     }
 </script>

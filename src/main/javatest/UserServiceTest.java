@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @RunWith(JunitSpring.class)
 @ContextConfiguration(locations = {
-    "classpath*:application*.xml","classpath*:spring*.xml"
+    "classpath*:application*.xml"
 })
 @WebAppConfiguration
 public class UserServiceTest {
@@ -31,8 +31,8 @@ public class UserServiceTest {
     @Test
     public void saveOrUpdateUser() throws UnsupportedEncodingException, NoSuchAlgorithmException {
         Users users = new Users();
-        users.setUsername("admin");
-        users.setPwd("admin");
+        users.setUsername("vv");
+        users.setPwd("cc");
         users.setState("0");
         users.setUtype("0");
         Map<String, String> stringStringMap = userService.saveOrUpdateUser(users);
@@ -49,6 +49,7 @@ public class UserServiceTest {
         Map<String, String> login = userService.login(users.getUsername(), users.getPwd());
         System.out.println(login);
     }
+
 
 
 }

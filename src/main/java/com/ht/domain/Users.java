@@ -3,8 +3,6 @@ package com.ht.domain;
 import com.ht.utils.PageParam;
 
 import java.io.Serializable;
-import java.util.HashSet;
-import java.util.Set;
 
 /**
  * 版权归公司所有
@@ -16,6 +14,7 @@ import java.util.Set;
  */
 
 public class Users extends PageParam implements Serializable{
+
     private String id;
     private String username;
     private String pwd;
