@@ -30,6 +30,9 @@ import java.util.Map;
 @WebAppConfiguration
 public class ResourceServiceTest {
 
+    
+    
+    
     @Autowired
     private ResourceService resourceService;
 
