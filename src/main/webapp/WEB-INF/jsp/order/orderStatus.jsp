@@ -68,7 +68,7 @@
     var $2 ;
     var table;
     var layer;
-
+    // 重置其中的值
     function resetOrderInfo(){
         $2("#id").val("");
         $2("#statusNo").val("");
