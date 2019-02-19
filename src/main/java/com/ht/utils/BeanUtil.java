@@ -1,6 +1,7 @@
 package com.ht.utils;
 
 import org.apache.commons.beanutils.PropertyUtils;
+import org.springframework.beans.BeanUtils;
 import org.springframework.util.StringUtils;
 
 import java.beans.BeanInfo;
@@ -125,4 +126,18 @@ public class BeanUtil {
         }
         return map;
     }
+
+
+    public static <E> List<E> listCopy(List<?> source, Class<E> destinationClass) throws Exception {
+        if (source.size()==0) return Collections.emptyList();
+        List<E> res = new ArrayList<E>(source.size());
+        for (Object o : source) {
+            E e = destinationClass.newInstance();
+            BeanUtils.copyProperties(o,e);
+            res.add(e);
+        }
+        return res;
+    }
+
+
 }

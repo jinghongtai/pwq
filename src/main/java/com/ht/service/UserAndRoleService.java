@@ -4,7 +4,6 @@ import com.ht.dao.UserAndRoleDao;
 import com.ht.domain.Role;
 import com.ht.domain.UserAndRole;
 import com.ht.utils.BeanUtil;
-import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -13,7 +12,6 @@ import org.springframework.util.StringUtils;
 
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -51,6 +49,13 @@ public class UserAndRoleService {
         return query;
     }
 
+
+    @Transactional(readOnly = true)
+    public List<UserAndRole> queryUserRole(String uId) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+        if(StringUtils.isEmpty(uId))return null;
+        List<UserAndRole> result = userAndRoleDao.query("uId", "=", uId);
+        return result;
+    }
 
     @Transactional(propagation = Propagation.REQUIRED)
     public boolean saveUserRole(List<UserAndRole> list){

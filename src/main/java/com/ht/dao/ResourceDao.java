@@ -4,6 +4,8 @@ import com.ht.domain.Resource;
 import org.hibernate.query.Query;
 import org.springframework.stereotype.Component;
 
+import java.util.List;
+
 /**
  * 版权归公司所有
  * 项目名称： 应用支撑平台;
@@ -29,6 +31,13 @@ public class ResourceDao extends BaseDao<Resource,String> {
         query.setParameter("field",value);
         Object obj = query.uniqueResult();
         return obj==null?null:Long.valueOf((int)obj);
+    }
+
+    public List<Resource> queryRoleResource(List<String> roleIds){
+        String hql = "from Resource re where id in(select pId from RoleAndResource where rId in :rList) ";
+        Query query = this.getConnection().createQuery(hql);
+        query.setParameterList("rList",roleIds);
+        return query.list();
     }
 
 }

@@ -31,12 +31,26 @@ public class ResourceService {
     @Autowired
     private ResourceDao resourceDao;
 
+    @Transactional(readOnly = true)
+    public List<Resource> queryRoleResource(List<String> roleIds){
+        if(roleIds==null||roleIds.size()==0)
+            return Collections.emptyList();
+        return resourceDao.queryRoleResource(roleIds);
+    }
 
     @Transactional(readOnly = true)
     public List<Resource> querySysResByEntity(Resource sysResource) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
         Map<String, Object> notNullProperty = BeanUtil.getNotNullProperty(sysResource);
         return resourceDao.query(notNullProperty,null,"orderNo","asc");
     }
+
+
+    @Transactional(readOnly = true)
+    public List<Resource> querySysResByEntity(List<String> ids) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
+        if(ids==null||ids.size()==0)return Collections.emptyList();
+        return resourceDao.queryIn(Resource.class,"id",ids);
+    }
+
 
     @Transactional(propagation = Propagation.REQUIRED)
     public Map<String, String> saveOrUpdateSysResource(Resource sysResource) throws Exception {

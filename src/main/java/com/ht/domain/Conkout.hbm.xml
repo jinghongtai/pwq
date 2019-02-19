@@ -1,0 +1,25 @@
+<?xml version='1.0' encoding='utf-8'?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+    <class name="com.ht.domain.Conkout" table="conkout" schema="pwd">
+        <id name="id">
+            <column name="id" sql-type="varchar(32)" length="32"/>
+            <generator class="uuid.hex" />
+        </id>
+        <property name="gzNo">
+            <column name="gzNo" sql-type="varchar(500)" length="500"/>
+        </property>
+        <property name="gzType">
+            <column name="gzType" sql-type="varchar(200)" length="200"/>
+        </property>
+        <property name="pwqId">
+            <column name="pwqId" sql-type="varchar(32)" length="32"/>
+        </property>
+        <property name="happenTime">
+            <column name="happenTime" sql-type="varchar(100)" length="100"/>
+        </property>
+    </class>
+</hibernate-mapping>

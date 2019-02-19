@@ -1,16 +1,15 @@
-package com.ht.domain;
-
-import com.ht.utils.PageParam;
+package com.ht.utils;
 
 /**
  * 版权归公司所有
  * 项目名称： 应用支撑平台;
  * 创建者    :  jinghongtai;
- * 创建日期: 2019年01月12日 17:41;
+ * 创建日期: 2019年02月13日 11:49;
  *
  * @version: 1.0
  */
-public class Pwq extends PageParam{
+public class PwqVo {
+
     private String id;
     private String name;            //喷雾器名称 T01~T34
     private String ip;              //对应的远程ip地址 射雾器ip或端口号
@@ -58,7 +57,10 @@ public class Pwq extends PageParam{
     }
 
     public String getCommunication() {
-        return communication;
+        if(null!=communication && !"".equals(communication)&&"1".equals(communication))
+            return "正常";
+        else
+            return "异常";
     }
 
     public void setCommunication(String communication) {
@@ -66,7 +68,10 @@ public class Pwq extends PageParam{
     }
 
     public String getAutoMark() {
-        return autoMark;
+        if(null!=autoMark && !"".equals(autoMark)&&"1".equals(autoMark))
+            return "自动";
+        else
+            return "手动";
     }
 
     public void setAutoMark(String autoMark) {
@@ -74,7 +79,10 @@ public class Pwq extends PageParam{
     }
 
     public String getFjAutoMark() {
-        return fjAutoMark;
+        if(null!=fjAutoMark && !"".equals(fjAutoMark)&&"1".equals(fjAutoMark))
+            return "启动";
+        else
+            return "关闭";
     }
 
     public void setFjAutoMark(String fjAutoMark) {
@@ -82,7 +90,10 @@ public class Pwq extends PageParam{
     }
 
     public String getPwMark() {
-        return pwMark;
+        if(null!=pwMark && !"".equals(pwMark)&&"1".equals(pwMark))
+            return "启动";
+        else
+            return "关闭";
     }
 
     public void setPwMark(String pwMark) {
@@ -90,7 +101,10 @@ public class Pwq extends PageParam{
     }
 
     public String getFjGzMark() {
-        return fjGzMark;
+        if(null!=fjGzMark && !"".equals(fjGzMark)&&"1".equals(fjGzMark))
+            return "故障";
+        else
+            return "正常";
     }
 
     public void setFjGzMark(String fjGzMark) {
@@ -98,7 +112,10 @@ public class Pwq extends PageParam{
     }
 
     public String getPwGzMark() {
-        return pwGzMark;
+        if(null!=pwGzMark && !"".equals(pwGzMark)&&"1".equals(pwGzMark))
+            return "故障";
+        else
+            return "正常";
     }
 
     public void setPwGzMark(String pwGzMark) {
@@ -134,23 +151,23 @@ public class Pwq extends PageParam{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
 
-        Pwq pwq = (Pwq) o;
+        PwqVo pwqVo = (PwqVo) o;
 
-        if (id != null ? !id.equals(pwq.id) : pwq.id != null) return false;
-        if (name != null ? !name.equals(pwq.name) : pwq.name != null) return false;
-        if (ip != null ? !ip.equals(pwq.ip) : pwq.ip != null) return false;
-        if (areaId != null ? !areaId.equals(pwq.areaId) : pwq.areaId != null) return false;
-        if (communication != null ? !communication.equals(pwq.communication) : pwq.communication != null) return false;
-        if (autoMark != null ? !autoMark.equals(pwq.autoMark) : pwq.autoMark != null) return false;
-        if (fjAutoMark != null ? !fjAutoMark.equals(pwq.fjAutoMark) : pwq.fjAutoMark != null) return false;
-        if (pwMark != null ? !pwMark.equals(pwq.pwMark) : pwq.pwMark != null) return false;
-        if (fjGzMark != null ? !fjGzMark.equals(pwq.fjGzMark) : pwq.fjGzMark != null) return false;
-        if (pwGzMark != null ? !pwGzMark.equals(pwq.pwGzMark) : pwq.pwGzMark != null) return false;
-        if (currentTurn != null ? !currentTurn.equals(pwq.currentTurn) : pwq.currentTurn != null) return false;
-        if (leftPosition != null ? !leftPosition.equals(pwq.leftPosition) : pwq.leftPosition != null) return false;
-        if (rightPosition != null ? !rightPosition.equals(pwq.rightPosition) : pwq.rightPosition != null) return false;
+        if (id != null ? !id.equals(pwqVo.id) : pwqVo.id != null) return false;
+        if (name != null ? !name.equals(pwqVo.name) : pwqVo.name != null) return false;
+        if (ip != null ? !ip.equals(pwqVo.ip) : pwqVo.ip != null) return false;
+        if (areaId != null ? !areaId.equals(pwqVo.areaId) : pwqVo.areaId != null) return false;
+        if (communication != null ? !communication.equals(pwqVo.communication) : pwqVo.communication != null)
+            return false;
+        if (autoMark != null ? !autoMark.equals(pwqVo.autoMark) : pwqVo.autoMark != null) return false;
+        if (fjAutoMark != null ? !fjAutoMark.equals(pwqVo.fjAutoMark) : pwqVo.fjAutoMark != null) return false;
+        if (pwMark != null ? !pwMark.equals(pwqVo.pwMark) : pwqVo.pwMark != null) return false;
+        if (fjGzMark != null ? !fjGzMark.equals(pwqVo.fjGzMark) : pwqVo.fjGzMark != null) return false;
+        if (pwGzMark != null ? !pwGzMark.equals(pwqVo.pwGzMark) : pwqVo.pwGzMark != null) return false;
+        if (currentTurn != null ? !currentTurn.equals(pwqVo.currentTurn) : pwqVo.currentTurn != null) return false;
+        if (leftPosition != null ? !leftPosition.equals(pwqVo.leftPosition) : pwqVo.leftPosition != null) return false;
+        return rightPosition != null ? rightPosition.equals(pwqVo.rightPosition) : pwqVo.rightPosition == null;
 
-        return true;
     }
 
     @Override

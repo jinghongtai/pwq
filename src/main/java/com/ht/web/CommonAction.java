@@ -1,11 +1,12 @@
 package com.ht.web;
 
 import com.alibaba.fastjson.JSON;
-import com.ht.domain.Resource;
-import com.ht.domain.Sendorder;
+import com.ht.domain.*;
 import com.ht.service.ResourceService;
 import com.ht.service.SendOrderService;
+import com.ht.service.UserAndRoleService;
 import com.ht.utils.BeanUtil;
+import com.ht.utils.SystemUtils;
 import config.util.ServerIp;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
@@ -15,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.*;
@@ -39,6 +41,8 @@ public class CommonAction {
     @Autowired
     private SendOrderService sendOrderService;
 
+    @Autowired
+    private UserAndRoleService userAndRoleService;
 
     /**
      * 页面跳转控制器
@@ -87,9 +91,24 @@ public class CommonAction {
      */
     @RequestMapping("/main")
     public ModelAndView index() throws IllegalAccessException, IntrospectionException, InvocationTargetException {
-        ModelAndView mv = new ModelAndView("main");
+        ModelAndView mv = new ModelAndView();
         // 查询系统的菜单  需根据授权情况查询
-        List<Resource> resources = resourceService.querySysResByEntity(new Resource());
+        HttpSession session = SystemUtils.getSession();
+        Users user = (Users)session.getAttribute("USER_KEY");
+        if(user==null){
+            mv.setViewName("redirect:/index.jsp");
+            return mv;
+        }
+        List<UserAndRole> userAndRoles = userAndRoleService.queryUserRole(user.getId());
+        List<Resource> resources = null;
+        if(userAndRoles!=null&&userAndRoles.size()>0){
+            Map<String, String> roleMap = BeanUtil.beanToMapKV("rId", "uId", userAndRoles);
+            if(roleMap!=null&&roleMap.size()>0){
+                List<String> roleIds = new ArrayList<>(roleMap.keySet());
+                // 查询角色对应的权限数据
+                resources = resourceService.queryRoleResource(roleIds);
+            }
+        }
         Map<String, List<Resource>> map = BeanUtil.getListToMapKList("pid", resources);
         resourceService.checkChildrenNode(map,"0");
         if(!map.isEmpty()){
@@ -97,7 +116,7 @@ public class CommonAction {
             List<Resource> returnResource = orderResource(new ArrayList<Resource>(resourceSet));
             mv.addObject("menuList",returnResource);
         }
-
+        mv.setViewName("main");
         return mv;
     }
 

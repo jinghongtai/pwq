@@ -5,7 +5,9 @@
 <hibernate-mapping>
 
     <class name="com.ht.domain.Pwq" table="pwq" schema="pwq">
-        <id name="id" column="id"/>
+        <id name="id" column="id">
+            <generator class="uuid.hex" />
+        </id>
         <property name="name" column="name"/>
         <property name="ip" column="ip"/>
         <property name="areaId" column="AreaId"/>

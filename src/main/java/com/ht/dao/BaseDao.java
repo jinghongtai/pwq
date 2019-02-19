@@ -65,6 +65,14 @@ public class BaseDao<T extends Object,ID extends Serializable> {
             query.setParameter("name",obj);
         return query.list();
     }
+
+    public <E> List<E> queryIn(Class<E> e,String field,List<? extends Object> obj){
+        String sql = "from " + e.getName()+" WHERE  1=1 and "+field+" in :field";
+        Query query = this.getConnection().createQuery(sql);
+        if(!StringUtils.isEmpty(field)&&null!=obj)
+            query.setParameterList("field",obj);
+        return query.list();
+    }
     /**
      * 分页查询数据
      * @param map

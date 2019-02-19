@@ -4,6 +4,7 @@ import com.ht.dao.UserDao;
 import com.ht.domain.Users;
 import com.ht.utils.BeanUtil;
 import com.ht.utils.PageVo;
+import com.ht.utils.SystemUtils;
 import config.util.SecurityUtil;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StringUtils;
 
+import javax.servlet.http.HttpSession;
 import java.beans.IntrospectionException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
@@ -54,7 +56,7 @@ public class UserService {
             map.put("message","密码不能为空");
         }
         if(map.size()==2)return map;
-        List<Users> userList = userDao.query("username", "=", pwd);
+        List<Users> userList = userDao.query("username", "=", username);
         if(userList==null||userList.size()==0){
             map.put("message","用户名不存在");
             return map;
@@ -62,6 +64,8 @@ public class UserService {
         String password = SecurityUtil.security(pwd,"MD5");
         if(password.equals(userList.get(0).getPwd())){
             map.put("status","success");
+            HttpSession session = SystemUtils.getSession();
+            session.setAttribute("USER_KEY",userList.get(0));
             return map;
         }else{
             // 密码出错次数限制
@@ -137,6 +141,39 @@ public class UserService {
         map.put("status","success");
         return map;
     }
+
+    @Transactional(propagation = Propagation.REQUIRED)
+    public Map<String,String> moifyPwd(String pwd,String  newPwd) throws IllegalAccessException, IntrospectionException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        Map<String,String> map = new HashMap<String,String>();
+        map.put("status","error");
+        if(StringUtils.isEmpty(pwd)){
+            map.put("message","旧密码不能为空");
+            return map;
+        }
+        if(StringUtils.isEmpty(newPwd)){
+            map.put("message","新密码不能为空");
+            return map;
+        }
+        String md5 = SecurityUtil.security(pwd, "MD5");
+        Users user = (Users)SystemUtils.getSession().getAttribute("USER_KEY");
+        if(user == null){
+            map.put("message","请先登录后再修改密码");
+            return map;
+        }
+        Users users = userDao.get(user.getId());
+        String newMd5 = SecurityUtil.security(newPwd, "MD5");
+        if(md5.equals(users.getPwd())){
+            users.setPwd(newMd5);
+            user.setPwd(newMd5);
+            userDao.update(users);
+        }else{
+            map.put("message","旧密码输入错误");
+            return map;
+        }
+        map.put("status","success");
+        return map;
+    }
+
 
     /**
      * 分页查询用户信息

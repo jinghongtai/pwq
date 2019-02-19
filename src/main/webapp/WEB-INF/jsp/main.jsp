@@ -65,16 +65,27 @@
                             <i class="layui-icon layui-icon-screen-full"></i>
                         </a>
                     </li>
-                    <li class="layui-nav-item" lay-unselect="">
+                    <li class="layui-nav-item" lay-unselect="" onmouseenter="myHeadMouenter()" onmouseleave="myHeadMouLeavel()">
                         <a href="javascript:;">
-                            <cite>贤心</cite>
+                            <c:if test="${not empty USER_KEY.headImg}">
+                                <img src="${USER_KEY.headImg}" alt="" style="width:30px;height: 30px;border-radius: 50%" />
+                            </c:if><cite>${USER_KEY.username}</cite>
                             <span class="layui-nav-more"></span></a>
-                        <dl class="layui-nav-child">
-                            <dd><a lay-href="set/user/info.html">基本资料</a></dd>
-                            <dd><a lay-href="set/user/password.html">修改密码</a></dd>
+                        <dl class="layui-nav-child" id="headDivInfo"  style="margin-top:-10px;" >
+                            <dd><a lay-href="/index/personcenter">基本资料</a></dd>
+                            <dd><a lay-href="/index/modifypwd">修改密码</a></dd>
                             <hr>
-                            <dd layadmin-event="logout" style="text-align: center;"><a>退出</a></dd>
+                            <dd><a lay-href="/userAction/logout">退出</a></dd>
                         </dl>
+                        <script>
+                            function myHeadMouenter(){
+                                $("#headDivInfo").show();
+                            }
+                            function myHeadMouLeavel(){
+                                $("#headDivInfo").hide();
+                            }
+
+                        </script>
                     </li>
 
                     <li class="layui-nav-item layui-hide-xs" lay-unselect="">
@@ -95,8 +106,8 @@
 
                     <ul style="height: 100%;overflow: hidden" class="layui-nav-side layui-nav layui-nav-tree layui-bg-molv" lay-shrink="all" id="LAY-system-side-menu" lay-filter="layadmin-system-side-menu">
 
-                        <c:forEach items="${menuList}" var="menu1">
-                            <li data-name="${menu1.id}" class="layui-nav-item" style="">
+                        <c:forEach items="${menuList}" var="menu1" varStatus="index">
+                            <li data-name="${menu1.id}" class="layui-nav-item <c:if test="${index.index == 0}">layui-nav-itemed</c:if> " style="">
                                 <a <c:if test="${menu1.resourceSet.size() == 0}">lay-href="${menu1.url}"</c:if><c:if test="${menu1.resourceSet.size()>0}">href="javascript:;"</c:if> lay-tips="${menu1.resourceName}" lay-direction="2">
                                         ${menu1.bz}
                                     <cite>${menu1.resourceName}</cite>
@@ -139,15 +150,26 @@
                 <div class="layui-icon layadmin-tabs-control layui-icon-prev" layadmin-event="leftPage"></div>
                 <div class="layui-icon layadmin-tabs-control layui-icon-next" layadmin-event="rightPage"></div>
                 <div class="layui-icon layadmin-tabs-control layui-icon-down">
-                    <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav">
-                        <li class="layui-nav-item" lay-unselect="">
+                    <ul class="layui-nav layadmin-tabs-select" lay-filter="layadmin-pagetabs-nav" >
+                        <li class="layui-nav-item" onmouseenter="myMouseEnter()" lay-unselect="" onmouseleave="myMouseOut()">
                             <a href="javascript:;"><span class="layui-nav-more"></span></a>
-                            <dl class="layui-nav-child layui-anim-fadein">
+                            <dl class="layui-nav-child me layui-anim-fadein layui-anim layui-anim-upbit"  >
                                 <dd layadmin-event="closeThisTabs"><a href="javascript:;">关闭当前标签页</a></dd>
                                 <dd layadmin-event="closeOtherTabs"><a href="javascript:;">关闭其它标签页</a></dd>
                                 <dd layadmin-event="closeAllTabs"><a href="javascript:;">关闭全部标签页</a></dd>
                             </dl>
                         </li>
+                        <script>
+
+                            function myMouseEnter(){
+                                $("dl.me").show();
+
+                            }
+                            function myMouseOut(){
+                                $("dl.me").hide();
+                            }
+
+                        </script>
                         <span class="layui-nav-bar"></span></ul>
                 </div>
                 <div class="layui-tab" lay-unauto="" lay-allowclose="true" lay-filter="layadmin-layout-tabs">

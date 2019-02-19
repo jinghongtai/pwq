@@ -167,7 +167,7 @@
                 layer.open({
                     type: 2,
                     title:orderNo+"#  喷雾器管理界面",
-                    area: ['300px', '500px'],
+                    area: ['300px', '430px'],
                     closeBtn:1,
                     content: 'sendOrder/sendOrderPage?areaId='+areaId+"&orderNo="+orderNo+"&id="+aa,
                     end: function(){

@@ -102,13 +102,15 @@
     <script src="../static/layui/layui.js" charset="utf-8"></script>
     <script>
         //Demo
-        layui.use('form', function(){
+        var layer ;
+        layui.use(['form','layer'], function(){
             var form = layui.form;
+            layer = layui.layer;
 
             //监听提交
             form.on('submit(formDemo)', function(data){
                 var subdata = data.field;
-                layer.msg(JSON.stringify(data.field));
+
                 $.ajax({
                     url:"/sendOrder/saveOrUpdateSendOrder?",
                     data:subdata,
@@ -119,12 +121,15 @@
                         if(res.status === "success"){
                             //保存成功
                             //layer.msg("保存成功！");
-                            alert("保存成功")
+                            msg("保存成功");
                             var index = parent.layer.getFrameIndex(window.name);
-                            parent.layer.close(index);
+                            setTimeout(function(){
+                                parent.layer.close(index);
+                            },2000);
+
                         }else{
                             //保存失败
-                            alert("保存失败")
+                            msg("保存失败");
                         }
 
                     }
@@ -163,7 +168,11 @@
         });
 
 
-
+        function msg(content){
+            layer.msg(content, {
+                time: 2000
+            });
+        }
 
     </script>
 </body>

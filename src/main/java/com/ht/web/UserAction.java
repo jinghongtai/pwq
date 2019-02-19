@@ -4,9 +4,11 @@ import com.ht.domain.Users;
 import com.ht.service.UserService;
 import com.ht.utils.FileUtil;
 import com.ht.utils.PageVo;
+import com.ht.utils.SystemUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -39,6 +41,11 @@ public class UserAction {
     private UserService userService;
 
 
+    @RequestMapping("/login")
+    @ResponseBody
+    public Map<String,String> login(String username,String pwd) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        return userService.login(username,pwd);
+    }
     /**
      * 分页查询用户数据
      * @param users
@@ -72,6 +79,36 @@ public class UserAction {
         }
         return userService.saveOrUpdateUser(users);
     }
+
+    @RequestMapping("/saveOrUpdateUserBySelf")
+    @ResponseBody
+    public Map<String,String> saveOrUpdateUserBySelf(MultipartFile file, Users users) throws UnsupportedEncodingException, NoSuchAlgorithmException{
+        if(file!=null){
+            Map<String, String> map = FileUtil.uploadFile(file, "static/upload/userImg", Arrays.asList("image/jpeg","image/jpg", "image/png"));
+            if("success".equals(map.get("status"))){
+                users.setHeadImg(map.get("path"));
+            }else
+                return map;
+        }
+        Users oldUser = (Users)SystemUtils.getSession().getAttribute("USER_KEY");
+        if(!StringUtils.isEmpty(users.getHeadImg()))
+            oldUser.setHeadImg(users.getHeadImg());
+        oldUser.setUsername(users.getUsername());
+        oldUser.setAddress(users.getAddress());
+        return userService.saveOrUpdateUser(users);
+    }
+
+    /**
+     * 退出
+     * @param ids
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout( ){
+        SystemUtils.getSession().removeAttribute("USER_KEY");
+        return "redirect:/index.jsp";
+    }
+
 
     /**
      * 删除用户基础信息
@@ -115,6 +152,9 @@ public class UserAction {
     public Map<String,String> modifyUserInfo(Users u) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
         return userService.modifyUserInfo(u);
     }
-
-
+    @RequestMapping("/moifyPwd")
+    @ResponseBody
+    public Map<String,String>  moifyPwd(String pwd,String  newPwd) throws IllegalAccessException, IntrospectionException, InvocationTargetException, UnsupportedEncodingException, NoSuchAlgorithmException {
+        return userService.moifyPwd(pwd,newPwd);
+    }
 }

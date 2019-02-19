@@ -30,6 +30,11 @@ import java.util.Map;
 @WebAppConfiguration
 public class ResourceServiceTest {
 
+    
+    /**
+     * 测试版本冲突问题
+    **/
+    
     @Autowired
     private ResourceService resourceService;
 
