@@ -285,6 +285,8 @@
       <version>3.1.6</version>
     </dependency>
     <!-- https://mvnrepository.com/artifact/org.apache.cxf/cxf-rt-transports-http -->
+
+
     <dependency>
       <groupId>org.apache.cxf</groupId>
       <artifactId>cxf-rt-transports-http</artifactId>
@@ -299,6 +301,7 @@
 
   <build>
     <finalName>pwq</finalName>
+
     <pluginManagement><!-- lock down plugins versions to avoid using Maven defaults (may be moved to parent pom) -->
       <plugins>
         <plugin>
