@@ -52,4 +52,17 @@ public class ResourceServiceTest {
 
 
 
+
+    @Test
+    public void testMe(){
+
+        System.out.println("测试暂存");
+
+
+    }
+
+
+
+
+
 }
