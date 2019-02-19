@@ -124,6 +124,9 @@
       <version>1.5.4</version>
     </dependency>
 
+    
+    
+    
     <!--其他组件-->
     <dependency>
       <groupId>commons-collections</groupId>
@@ -329,6 +332,8 @@
           <artifactId>maven-install-plugin</artifactId>
           <version>2.5.2</version>
         </plugin>
+        
+        
         <plugin>
           <artifactId>maven-deploy-plugin</artifactId>
           <version>2.8.2</version>
